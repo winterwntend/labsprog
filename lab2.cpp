@@ -44,14 +44,14 @@ public:
 
     // Операторы векторной алгебры
     vect operator+(const vect& v) const {
-        cout << "Сложение векторов #" << num << " и #" << v.num << endl;
+        cout << "Сложение векторов #" << num << " и #" << v.get_num() << endl;
         vect res(dim);
         for (int i = 0; i < dim; i++) res.b[i] = b[i] + v.b[i];
         return res;
     }
 
     vect operator-(const vect& v) const {
-        cout << "Вычитание векторов #" << num << " и #" << v.num << endl;
+        cout << "Вычитание векторов #" << num << " и #" << v.get_num() << endl;
         vect res(dim);
         for (int i = 0; i < dim; i++) res.b[i] = b[i] - v.b[i];
         return res;
@@ -65,7 +65,7 @@ public:
     }
 
     double operator*(const vect& v) const {
-        cout << "Скалярное произведение векторов #" << num << " и #" << v.num << endl;
+        cout << "Скалярное произведение векторов #" << num << " и #" << v.get_num() << endl;
         double sum = 0;
         for (int i = 0; i < dim; i++) sum += b[i] * v.b[i];
         return sum;
@@ -76,6 +76,21 @@ public:
         vect res(v.dim);
         for (int i = 0; i < v.dim; i++) res.b[i] = k * v.b[i];
         return res;
+    }
+
+    // Оператор доступа по индексу
+    double& operator[](int index) {
+        return b[index];
+    }
+
+    // Константный оператор доступа по индексу
+    const double& operator[](int index) const {
+        return b[index];
+    }
+
+    // Метод для получения номера
+    int get_num() const {
+        return num;
     }
 
     void print() const {
@@ -173,7 +188,7 @@ public:
     }
 
     vect operator*(const vect& v) const {
-        cout << "Умножение матрицы #" << num << " на вектор #" << v.num << endl;
+        cout << "Умножение матрицы #" << num << " на вектор #" << v.get_num() << endl;
         vect res(dim);
         for (int i = 0; i < dim; i++) {
             double sum = 0;
@@ -202,10 +217,18 @@ int matr::count = 0;
 int main() {
     // Тестируем векторы
     vect v1(3), v2(3);
+    v1[0] = 1; v1[1] = 2; v1[2] = 3;
+    v2[0] = 4; v2[1] = 5; v2[2] = 6;
+    
     v1 = v1 + v2;
     v1 = -v1;
     double dot = v1 * v2;
     vect v3 = 2.5 * v1;
+
+    v1.print();
+    v2.print();
+    v3.print();
+    cout << "Скалярное произведение: " << dot << endl;
 
     // Тестируем матрицы
     matr m1(2), m2(2);
