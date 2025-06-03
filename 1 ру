@@ -1,0 +1,34 @@
+import math
+
+def trapezoid_rule(func, a, b, nseg):
+    dx = (b - a) / nseg
+    total_sum = 0.5 * (func(a) + func(b))
+    for i in range(1, nseg):
+        total_sum += func(a + i * dx)
+    return total_sum * dx
+
+def func(x):
+    if x <= 0:
+        return 0 
+    ln = math.log(x)
+    return (x ** 2) * ln
+
+print("Используем метод трапеций")
+print("Интегрируемая функция: f(x) = x**2 * ln(x)")
+a = 0.0001 
+b = 1
+nseg = 2
+eps = 1e-7
+
+print('a =', a, ', b = ', b, ', eps = ', eps, sep='')
+
+int_1 = trapezoid_rule(func, a, b, nseg)
+nseg *= 2
+int_2 = trapezoid_rule(func, a, b, nseg)
+
+while abs(int_1 - int_2) > eps:
+    nseg *= 2
+    int_1 = int_2
+    int_2 = trapezoid_rule(func, a, b, nseg)
+
+print("\nОтвет: I =", int_2, "\nКоличество разбиений: ", nseg)
